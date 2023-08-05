@@ -1,0 +1,27 @@
+//Intento de mostrar asterioides por ID, NO funcionó
+//Mostrar asteroide por ID
+app.get("/:id", async (req, res) => {
+    try{
+        const response = await axios.get(url3, {
+            params:{
+                api_key: apiKey
+            }
+        })
+
+        let asteriodForId = response.data.near_earth_objects.filter(
+            (idAsteriod) => idAsteriod.id === req.params.id
+            
+        )
+        
+        if(asteriodForId.length !== 0){
+            res.status(200).json(asteriodForId[0])
+        } else{
+            res.status(404).json({error: "ID no encontrado"})
+        }
+
+
+    } catch(error){
+        console.log(`Ha ocurrido un error: ${error}`)
+        res.status(500).json({error: "Error al mostrar los datos"})
+    }
+})
